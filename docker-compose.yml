@@ -1,0 +1,6 @@
+version: '3'
+services:
+  naver_e2e_test:
+    build: .
+    volumes:
+      - ./report.html:/app/report.html

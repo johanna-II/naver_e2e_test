@@ -21,4 +21,6 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-CMD ["pytest", "-v", "--html=report.html"]
+RUN chmod +x run_tests_and_lint.sh
+
+CMD ["./run_tests_and_lint.sh"]

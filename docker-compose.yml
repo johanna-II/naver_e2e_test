@@ -4,3 +4,4 @@ services:
     build: .
     volumes:
       - ./report.html:/app/report.html
+      - ./pylint_report.txt:/app/pylint_report.txt

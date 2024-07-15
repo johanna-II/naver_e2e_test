@@ -7,6 +7,8 @@ def test_register_account(driver):
     registration_page = RegistrationPage(driver)
     registration_page.navigate()
     registration_page.agree_general_conditions()
+    # need to implement about SMS verification
+    registration_page.verify_sms()
     registration_page.register_account("Test User", "1990", "01", "01", "남자", "01012345678")
     assert registration_page.is_registration_successful()
 

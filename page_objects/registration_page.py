@@ -29,6 +29,9 @@ class RegistrationPage(BasePage):
         self.wait_for_element(self.SELECT_ALL).click()
         self.wait_for_clickable(self.NEXT_BUTTON).click()
 
+    def verify_sms(self):
+        raise NotImplementedError('Need to be implemented')
+
     def register_account(self, name, birth_year, birth_month, birth_day, gender, phone):
         self.wait_for_element(self.ID_FIELD).send_keys(generate_random_string(8))
         self.wait_for_element(self.PASSWORD_FIELD).send_keys("StrongPassword123!")

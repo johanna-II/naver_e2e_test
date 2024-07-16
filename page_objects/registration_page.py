@@ -4,7 +4,11 @@ from utils import generate_random_string
 
 
 class RegistrationPage(BasePage):
-    URL = "https://nid.naver.com/user2/V2Join"
+    """
+    Register with multi languages. (lang=ko_KR, en_US, zh-Hans_CN, zh-Hant_TW, ja_JP)
+    https://nid.naver.com/user2/join/agree?lang={}&realname=
+    """
+    URL = "https://nid.naver.com/user2/join/agree?lang="
 
     # Locators
     SELECT_ALL = (By.ID, "chk_all")
@@ -19,7 +23,12 @@ class RegistrationPage(BasePage):
     GENDER_FIELD = (By.ID, "gender")
     EMAIL_FIELD = (By.ID, "email")
     PHONE_FIELD = (By.ID, "phoneNo")
+    SEND_CODE_BUTTON = (By.ID, "btnSend")
     JOIN_BUTTON = (By.ID, "btnJoin")
+    NATION_BUTTON = (By.ID, "nationNo")
+
+    def set_language(self, lang):
+        self.URL += lang
 
     def navigate(self):
         self.driver.get(self.URL)
@@ -42,7 +51,12 @@ class RegistrationPage(BasePage):
         self.wait_for_element(self.BIRTH_DAY_FIELD).send_keys(birth_day)
         self.wait_for_element(self.GENDER_FIELD).send_keys(gender)
         self.wait_for_element(self.EMAIL_FIELD).send_keys(f"{generate_random_string(8)}@example.com")
-        self.wait_for_element(self.PHONE_FIELD).send_keys(phone)
+        # If language is not Korean, select the country.
+        if 'ko_KR' not in self.URL:
+            self.select_element(self.NATION_BUTTON).select_by_value(1)
+        else:
+            self.wait_for_element(self.PHONE_FIELD).send_keys(phone)
+
         self.wait_for_clickable(self.JOIN_BUTTON).click()
 
     def is_registration_successful(self):

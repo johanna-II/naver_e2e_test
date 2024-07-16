@@ -1,4 +1,4 @@
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
 
 
@@ -15,3 +15,7 @@ class BasePage:
         return WebDriverWait(self.driver, timeout).until(
             EC.element_to_be_clickable(locator)
         )
+
+    @staticmethod
+    def select_element(locator):
+        return Select(locator)

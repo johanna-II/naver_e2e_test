@@ -3,13 +3,25 @@ from page_objects.registration_page import RegistrationPage
 from page_objects.login_page import LoginPage
 
 
-def test_register_account(driver):
+def test_register_account_ko(driver):
     registration_page = RegistrationPage(driver)
     registration_page.navigate()
     registration_page.agree_general_conditions()
+    registration_page.set_language('ko_KR')
     # need to implement about SMS verification
     registration_page.verify_sms()
     registration_page.register_account("Test User", "1990", "01", "01", "남자", "01012345678")
+    assert registration_page.is_registration_successful()
+
+
+def test_register_account_en(driver):
+    registration_page = RegistrationPage(driver)
+    registration_page.navigate()
+    registration_page.agree_general_conditions()
+    registration_page.set_language('en_US')
+    # need to implement about SMS verification
+    registration_page.verify_sms()
+    registration_page.register_account("Test User", "1990", "01", "01", "남자", "08712345678")
     assert registration_page.is_registration_successful()
 
 

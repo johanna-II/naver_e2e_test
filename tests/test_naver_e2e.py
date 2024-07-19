@@ -14,7 +14,13 @@ def test_valid_register_account(driver, phone_number, language):
     registration_page = RegistrationPage(driver, language)
     registration_page.navigate()
     registration_page.agree_general_conditions()
-    registration_page.register_account("Test User", "1990", "01", "01", "남자", phone_number)
+    registration_page.register_account(
+        name="Test User",
+        birth_year="1990",
+        birth_month="01",
+        birth_day="01",
+        gender="남자",
+        phone=phone_number)
 
     if language != "ko_KR":
         # Request SMS verification

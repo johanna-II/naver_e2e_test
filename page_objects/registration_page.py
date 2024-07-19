@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 from .base_page import BasePage
-from utils import generate_random_string
+from utils.utils import generate_random_string
 
 
 class RegistrationPage(BasePage):

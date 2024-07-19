@@ -1,6 +1,12 @@
 import pytest
 from page_objects.registration_page import RegistrationPage
 from page_objects.login_page import LoginPage
+from utils.twilio_utils import send_verification_code, wait_for_and_get_verification_code
+
+
+@pytest.fixture(scope="module")
+def phone_number():
+    return os.environ['VERIFY_PHONE_NUMBER']
 
 
 def test_register_account_ko(driver):

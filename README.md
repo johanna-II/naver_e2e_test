@@ -19,7 +19,7 @@ This project is your ticket to ensuring Naver.com's registration and login proce
 
 1. Clone this repo faster than you can say "Selenium":
    ```
-   git clone https://github.com/your-username/naver-e2e-test.git
+   git clone https://github.com/johanna-II/naver-e2e-test.git
    ```
 
 2. Navigate into the project folder:
@@ -48,7 +48,7 @@ naver_e2e_test/
 │
 ├── page_objects/         # Where the page objects party 🎉
 ├── tests/                # The VIP area for our tests 🧪
-├── utils.py              # The superhero utility belt 🦸‍♂️
+├── utils/                # The superhero utility belt 🦸‍♂️
 ├── conftest.py           # The bouncer that sets up our test environment 💪
 ├── requirements.txt      # The guest list for our Python packages 📜
 ├── .pylintrc             # The rule book for our code's behavior 📏

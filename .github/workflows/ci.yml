@@ -29,7 +29,7 @@ jobs:
 
       - name: Run pylint
         run: |
-          pylint solid-parakeet
+          pylint .
 
   test:
     name: Test with pytest
@@ -52,7 +52,7 @@ jobs:
 
       - name: Run pytest
         run: |
-          pytest solid-parakeet/tests
+          pytest ./tests
 
   build:
     name: Build Docker image

@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
-from .base_page import BasePage
 from utils.utils import generate_random_string
+from .base_page import BasePage
 
 
 class RegistrationPage(BasePage):
@@ -47,22 +47,40 @@ class RegistrationPage(BasePage):
         self.wait_for_element(self.SELECT_ALL).click()
         self.wait_for_clickable(self.NEXT_BUTTON).click()
 
-    def register_account(self, name, birth_year, birth_month, birth_day, gender, phone):
+    # def register_account(self, name, birth_year, birth_month, birth_day, gender, phone):
+    #     self.wait_for_element(self.ID_FIELD).send_keys(generate_random_string(8))
+    #     self.wait_for_element(self.PASSWORD_FIELD).send_keys("StrongPassword123!")
+    #     self.wait_for_element(self.PASSWORD_CONFIRM_FIELD).send_keys("StrongPassword123!")
+    #     self.wait_for_element(self.NAME_FIELD).send_keys(name)
+    #     self.wait_for_element(self.BIRTH_YEAR_FIELD).send_keys(birth_year)
+    #     self.wait_for_element(self.BIRTH_MONTH_FIELD).send_keys(birth_month)
+    #     self.wait_for_element(self.BIRTH_DAY_FIELD).send_keys(birth_day)
+    #     self.wait_for_element(self.GENDER_FIELD).send_keys(gender)
+    #     # e-mail field is optional
+    #     self.wait_for_element(self.EMAIL_FIELD).send_keys(f"{generate_random_string(8)}@example.com")
+    #     # If language is not Korean, select the country.
+    #     if self.language != 'ko_KR':
+    #         self.select_element(self.NATION_BUTTON).select_by_value(1)
+    #     else:
+    #         self.wait_for_element(self.PHONE_FIELD).send_keys(phone)
+    #     # self.wait_for_clickable(self.JOIN_BUTTON).click()
+    #
+    def register_account(self,**kwargs):
         self.wait_for_element(self.ID_FIELD).send_keys(generate_random_string(8))
         self.wait_for_element(self.PASSWORD_FIELD).send_keys("StrongPassword123!")
         self.wait_for_element(self.PASSWORD_CONFIRM_FIELD).send_keys("StrongPassword123!")
-        self.wait_for_element(self.NAME_FIELD).send_keys(name)
-        self.wait_for_element(self.BIRTH_YEAR_FIELD).send_keys(birth_year)
-        self.wait_for_element(self.BIRTH_MONTH_FIELD).send_keys(birth_month)
-        self.wait_for_element(self.BIRTH_DAY_FIELD).send_keys(birth_day)
-        self.wait_for_element(self.GENDER_FIELD).send_keys(gender)
+        self.wait_for_element(self.NAME_FIELD).send_keys(kwargs.get('name'))
+        self.wait_for_element(self.BIRTH_YEAR_FIELD).send_keys(kwargs.get('birth_year'))
+        self.wait_for_element(self.BIRTH_MONTH_FIELD).send_keys(kwargs.get('birth_month'))
+        self.wait_for_element(self.BIRTH_DAY_FIELD).send_keys(kwargs.get('birth_day'))
+        self.wait_for_element(self.GENDER_FIELD).send_keys(kwargs.get('gender'))
         # e-mail field is optional
         self.wait_for_element(self.EMAIL_FIELD).send_keys(f"{generate_random_string(8)}@example.com")
         # If language is not Korean, select the country.
         if self.language != 'ko_KR':
             self.select_element(self.NATION_BUTTON).select_by_value(1)
         else:
-            self.wait_for_element(self.PHONE_FIELD).send_keys(phone)
+            self.wait_for_element(self.PHONE_FIELD).send_keys(kwargs.get('phone'))
         # self.wait_for_clickable(self.JOIN_BUTTON).click()
 
     def request_sms_verification(self):

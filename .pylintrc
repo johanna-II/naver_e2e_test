@@ -3,17 +3,23 @@ ignore=CVS
 ignore-patterns=
 persistent=yes
 load-plugins=
-jobs=1
+jobs=0
 unsafe-load-any-extension=no
 extension-pkg-whitelist=
 
 [MESSAGES CONTROL]
 confidence=
-disable=C0111
+disable=C0111,  # missing-docstring
+        C0103,  # invalid-name
+        C0304,  # missing-final-newline
+        C0301,  # line-too-long
+        C0325,  # superfluous-parens
+        W0611,  # unused-import
+        W0612,  # unused-variable
+        W0703,  # broad-except
 
 [REPORTS]
 output-format=text
-files-output=no
 reports=yes
 evaluation=10.0 - ((float(5 * error + warning + refactor + convention) / statement) * 10)
 
@@ -32,3 +38,19 @@ min-similarity-lines=4
 ignore-comments=yes
 ignore-docstrings=yes
 ignore-imports=no
+
+[TYPECHECK]
+ignore-mixin-members=yes
+ignored-classes=SQLObject, optparse.Values, thread._local, _thread._local
+generated-members=REQUEST,acl_users,aq_parent,objects,DoesNotExist,id,pk,_meta,base_fields,context
+
+[DESIGN]
+max-args=10
+max-locals=15
+max-returns=6
+max-branches=12
+max-statements=50
+max-parents=7
+max-attributes=7
+min-public-methods=1
+max-public-methods=20

@@ -9,25 +9,26 @@ def phone_number():
     return os.environ['VERIFY_PHONE_NUMBER']
 
 
-def test_register_account_ko(driver):
-    registration_page = RegistrationPage(driver)
+@pytest.mark.parametrize("language", ["ko_KR", "en_US", "zh-Hans_CN", "zh-Hant_TW", "ja_JP"])
+def test_valid_register_account(driver, phone_number, language):
+    registration_page = RegistrationPage(driver, language)
     registration_page.navigate()
     registration_page.agree_general_conditions()
-    registration_page.set_language('ko_KR')
-    # need to implement about SMS verification
-    registration_page.verify_sms()
-    registration_page.register_account("Test User", "1990", "01", "01", "남자", "01012345678")
-    assert registration_page.is_registration_successful()
+    registration_page.register_account("Test User", "1990", "01", "01", "남자", phone_number)
 
+    if language != "ko_KR":
+        # Request SMS verification
+        registration_page.request_sms_verification()
 
-def test_register_account_en(driver):
-    registration_page = RegistrationPage(driver)
-    registration_page.navigate()
-    registration_page.agree_general_conditions()
-    registration_page.set_language('en_US')
-    # need to implement about SMS verification
-    registration_page.verify_sms()
-    registration_page.register_account("Test User", "1990", "01", "01", "남자", "08712345678")
+        # Send verification code using Twilio
+        send_verification_code(phone_number)
+
+        # Wait for and retrieve the verification code
+        verification_code = wait_for_and_get_verification_code()
+        assert verification_code is not None, f"Failed to receive verification code for language: {language}"
+
+        # Enter the verification code
+        registration_page.enter_verification_code(verification_code)
     assert registration_page.is_registration_successful()
 
 

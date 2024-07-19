@@ -19,12 +19,12 @@ This project is your ticket to ensuring Naver.com's registration and login proce
 
 1. Clone this repo faster than you can say "Selenium":
    ```
-   git clone https://github.com/johanna-II/naver-e2e-test.git
+   git clone https://github.com/johanna-II/naver_e2e_test.git
    ```
 
 2. Navigate into the project folder:
    ```
-   cd naver-e2e-test
+   cd naver_e2e_test
    ```
 
 3. Fire up those engines:

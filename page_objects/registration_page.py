@@ -21,6 +21,7 @@ class RegistrationPage(BasePage):
     BIRTH_MONTH_FIELD = (By.ID, "mm")
     BIRTH_DAY_FIELD = (By.ID, "dd")
     GENDER_FIELD = (By.ID, "gender")
+    FOREIGNER_FIELD = (By.ID, "identityGender1")  # 내국인
     EMAIL_FIELD = (By.ID, "email")
     PHONE_FIELD = (By.ID, "phoneNo")
     SEND_CODE_BUTTON = (By.ID, "btnSend")
@@ -73,7 +74,11 @@ class RegistrationPage(BasePage):
         self.wait_for_element(self.BIRTH_YEAR_FIELD).send_keys(kwargs.get('birth_year'))
         self.wait_for_element(self.BIRTH_MONTH_FIELD).send_keys(kwargs.get('birth_month'))
         self.wait_for_element(self.BIRTH_DAY_FIELD).send_keys(kwargs.get('birth_day'))
+        # id=gender1(Male), gender2(Female), gender3(Other) if lang != ko_KR
+        # id=identityGender1(Male), identityGender2(Female)
         self.wait_for_element(self.GENDER_FIELD).send_keys(kwargs.get('gender'))
+        if self.language == 'ko_KR':
+            self.wait_for_element(self.FOREIGNER_FIELD).send_keys(kwargs.get('foreigner'))
         # e-mail field is optional
         self.wait_for_element(self.EMAIL_FIELD).send_keys(f"{generate_random_string(8)}@example.com")
         # If language is not Korean, select the country.

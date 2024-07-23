@@ -20,8 +20,6 @@ class RegistrationPage(BasePage):
     BIRTH_YEAR_FIELD = (By.ID, "yy")
     BIRTH_MONTH_FIELD = (By.ID, "mm")
     BIRTH_DAY_FIELD = (By.ID, "dd")
-    GENDER_FIELD = (By.ID, "gender")
-    FOREIGNER_FIELD = (By.ID, "identityGender1")  # 내국인
     EMAIL_FIELD = (By.ID, "email")
     PHONE_FIELD = (By.ID, "phoneNo")
     SEND_CODE_BUTTON = (By.ID, "btnSend")
@@ -33,74 +31,73 @@ class RegistrationPage(BasePage):
     def __init__(self, driver, language="ko_KR"):
         super().__init__(driver)
         self.language = language
+        self.GENDER_FIELD = (By.ID, "gender1") if self.language != 'ko_KR' else (By.ID, "identityGender1")
+        self.FOREIGNER_FIELD = (By.ID, "identityGender1")  # 내국인
 
     def navigate(self):
+        """Navigate to the registration page."""
         self.driver.get(self.URL.format(self.language))
 
     # to change the language on the page if needed
     def select_language(self, language):
+        """Change the language on the page."""
         select = Select(self.wait_for_element(self.LANGUAGE_SELECTOR))
         select.select_by_value(language)
         self.language = language
+        # Update GENDER_FIELD based on new language
+        self.GENDER_FIELD = (By.ID, "gender1") if language != 'ko_KR' else (By.ID, "identityGender1")
 
     # agree general conditions all
     def agree_general_conditions(self):
+        """Agree to all general conditions."""
         self.wait_for_element(self.SELECT_ALL).click()
         self.wait_for_clickable(self.NEXT_BUTTON).click()
 
-    # def register_account(self, name, birth_year, birth_month, birth_day, gender, phone):
-    #     self.wait_for_element(self.ID_FIELD).send_keys(generate_random_string(8))
-    #     self.wait_for_element(self.PASSWORD_FIELD).send_keys("StrongPassword123!")
-    #     self.wait_for_element(self.PASSWORD_CONFIRM_FIELD).send_keys("StrongPassword123!")
-    #     self.wait_for_element(self.NAME_FIELD).send_keys(name)
-    #     self.wait_for_element(self.BIRTH_YEAR_FIELD).send_keys(birth_year)
-    #     self.wait_for_element(self.BIRTH_MONTH_FIELD).send_keys(birth_month)
-    #     self.wait_for_element(self.BIRTH_DAY_FIELD).send_keys(birth_day)
-    #     self.wait_for_element(self.GENDER_FIELD).send_keys(gender)
-    #     # e-mail field is optional
-    #     self.wait_for_element(self.EMAIL_FIELD).send_keys(f"{generate_random_string(8)}@example.com")
-    #     # If language is not Korean, select the country.
-    #     if self.language != 'ko_KR':
-    #         self.select_element(self.NATION_BUTTON).select_by_value(1)
-    #     else:
-    #         self.wait_for_element(self.PHONE_FIELD).send_keys(phone)
-    #     # self.wait_for_clickable(self.JOIN_BUTTON).click()
-    #
-    def register_account(self,**kwargs):
+    def register_account(self, **kwargs):
+        """Fill in the registration form with provided data."""
+        self._fill_common_fields(kwargs)
+        self._handle_gender_and_nationality(kwargs)
+        self._fill_email_and_phone(kwargs)
+        # self.wait_for_clickable(self.JOIN_BUTTON).click()
+
+    def _fill_common_fields(self, data):
+        """Fill in common fields for all languages."""
         self.wait_for_element(self.ID_FIELD).send_keys(generate_random_string(8))
         self.wait_for_element(self.PASSWORD_FIELD).send_keys("StrongPassword123!")
         self.wait_for_element(self.PASSWORD_CONFIRM_FIELD).send_keys("StrongPassword123!")
-        self.wait_for_element(self.NAME_FIELD).send_keys(kwargs.get('name'))
-        self.wait_for_element(self.BIRTH_YEAR_FIELD).send_keys(kwargs.get('birth_year'))
-        self.wait_for_element(self.BIRTH_MONTH_FIELD).send_keys(kwargs.get('birth_month'))
-        self.wait_for_element(self.BIRTH_DAY_FIELD).send_keys(kwargs.get('birth_day'))
-        # id=gender1(Male), gender2(Female), gender3(Other) if lang != ko_KR
-        # id=identityGender1(Male), identityGender2(Female)
-        self.wait_for_element(self.GENDER_FIELD).send_keys(kwargs.get('gender'))
+        self.wait_for_element(self.NAME_FIELD).send_keys(data.get('name'))
+        self.wait_for_element(self.BIRTH_YEAR_FIELD).send_keys(data.get('birth_year'))
+        self.wait_for_element(self.BIRTH_MONTH_FIELD).send_keys(data.get('birth_month'))
+        self.wait_for_element(self.BIRTH_DAY_FIELD).send_keys(data.get('birth_day'))
+
+    def _handle_gender_and_nationality(self, data):
+        """Handle gender and nationality fields based on language."""
+        self.wait_for_element(self.GENDER_FIELD).send_keys(data.get('gender'))
         if self.language == 'ko_KR':
-            self.wait_for_element(self.FOREIGNER_FIELD).send_keys(kwargs.get('foreigner'))
-        # e-mail field is optional
+            self.wait_for_element(self.FOREIGNER_FIELD).send_keys(data.get('foreigner'))
+
+    def _fill_email_and_phone(self, data):
+        """Fill in email and phone fields."""
         self.wait_for_element(self.EMAIL_FIELD).send_keys(f"{generate_random_string(8)}@example.com")
-        # If language is not Korean, select the country.
-        if self.language != 'ko_KR':
-            self.select_element(self.NATION_BUTTON).select_by_value(1)
-        else:
-            self.wait_for_element(self.PHONE_FIELD).send_keys(kwargs.get('phone'))
-        # self.wait_for_clickable(self.JOIN_BUTTON).click()
+        if self.language == 'ko_KR':
+            self.wait_for_element(self.PHONE_FIELD).send_keys(data.get('phone'))
 
     def request_sms_verification(self):
+        """Request SMS verification if not Korean."""
         if self.language != "ko_KR":
             self.wait_for_clickable(self.SEND_CODE_BUTTON).click()
 
     def enter_verification_code(self, code):
+        """Enter SMS verification code if not Korean."""
         if self.language != "ko_KR":
             self.wait_for_element(self.SMS_CODE_INPUT).send_keys(code)
 
     def submit_registration(self):
+        """Submit the registration form."""
         self.wait_for_clickable(self.JOIN_BUTTON).click()
 
     def is_registration_successful(self):
-        # This method might need to be updated based on how success is indicated in different languages
+        """Check if registration was successful based on language-specific messages."""
         success_messages = {
             "ko_KR": "가입 완료",
             "en_US": "Registration Complete",

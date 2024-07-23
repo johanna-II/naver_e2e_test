@@ -40,6 +40,8 @@ def test_valid_register_account(driver, language, registration_data):
     if language != "ko_KR":
         verify_sms(registration_page, registration_data["phone"], language)
 
+    registration_page.submit_registration()
+
     assert registration_page.is_registration_successful(), f"Registration failed for language: {language}"
 
 
@@ -61,6 +63,7 @@ def test_invalid_register_account(driver, language, registration_data):
     registration_page.agree_general_conditions()
 
     registration_page.register_account(**invalid_data)
+    registration_page.submit_registration()
 
     assert not registration_page.is_registration_successful(), f"Registration should have failed for language: {language}"
 
@@ -75,6 +78,7 @@ def test_missing_required_field(driver, language, registration_data, missing_fie
     registration_page.agree_general_conditions()
 
     registration_page.register_account(**incomplete_data)
+    registration_page.submit_registration()
 
     assert not registration_page.is_registration_successful(), f"Registration should have failed for language: {language} with missing {missing_field}"
 

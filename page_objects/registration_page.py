@@ -20,7 +20,7 @@ class RegistrationPage(BasePage):
     BIRTH_YEAR_FIELD = (By.ID, "yy")
     BIRTH_MONTH_FIELD = (By.ID, "mm")
     BIRTH_DAY_FIELD = (By.ID, "dd")
-    GENDER_FIELD = (By.ID, "gender")
+    GENDER_FIELD = (By.ID, "gender1") if self.language != 'ko_KR' else (By.ID, "identityGender1")
     FOREIGNER_FIELD = (By.ID, "identityGender1")  # 내국인
     EMAIL_FIELD = (By.ID, "email")
     PHONE_FIELD = (By.ID, "phoneNo")

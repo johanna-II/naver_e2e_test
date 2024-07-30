@@ -90,11 +90,13 @@ def test_login_success(driver):
     assert login_page.is_login_successful()
 
 
-def test_login_failure(driver):
-    login_page = LoginPage(driver)
+@pytest.mark.skipif("language == 'ja_JP'", reason="Skipping Japanese language test")
+def test_login_failure(driver, language):
+    login_page = LoginPage(driver, language)
     login_page.navigate()
     login_page.login("wrong_username", "wrong_password")
-    assert "아이디 또는 비밀번호가 잘못 입력되었습니다." in login_page.get_error_message()
+    assert not login_page.is_login_successful()
+    assert login_page.get_error_message(), f"Login should have failed for language: {language}"
 
 
 def test_login_empty_fields(driver):

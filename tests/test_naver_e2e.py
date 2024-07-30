@@ -79,7 +79,7 @@ def test_missing_required_field(driver, language, registration_data, missing_fie
 
     registration_page.register_account(**incomplete_data)
     registration_page.submit_registration()
-
+    
     assert not registration_page.is_registration_successful(), f"Registration should have failed for language: {language} with missing {missing_field}"
 
 
